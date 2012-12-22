@@ -23,17 +23,21 @@ def middle_word(sentence, first, second, lastWord):
 		ending = sentence.index(second, beginning)
 		return (sentence[beginning:ending], ending)
 	except ValueError:
-		return ""
+		return ("", 0)
 
 def finding_words():
 	finalsynonyms = []
 	lastWord = 0
-	auxFile = open('auxFile.txt', 'w')
-	midword = middle_word(auxFile.read(), 'title="">', '</span>', lastWord)
+	auxFile = open('auxFile.txt', 'r')
+	midword = middle_word(auxFile.read(), 'title="">', '<', lastWord)
 	while midword[0] != "":
-		finalsynonyms.append(minword[0])
+		finalsynonyms.append(midword[0])
 		lastWord = midword[1]
-		midword = middle_word(auxFile.read(), 'title="">', '</span>', lastWord)
+		print lastWord
+		auxFile = open('auxFile.txt', 'r')
+		midword = middle_word(auxFile.read(), 'title="">', '<', lastWord)
+		print midword
+	auxFile.close()
 	return finalsynonyms
 
 		
