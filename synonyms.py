@@ -12,7 +12,12 @@ def retrieve_information(word):
 	action = "/thesaurus/" #Looks for the synonym of the word
 	url = "http://api.wordreference.com/" + API_KEY + action + word
 	htmlurl = urllib.urlopen(url)
-	auxFile = open('auxFile.txt', 'w')
+	try:
+		auxFile = open('auxFile.txt', 'w')
+	except:
+		print "Not able to create the auxFile to save the results"
+		raise
+
 	auxFile.write(htmlurl.read())
 	htmlurl.close()
 	auxFile.close()
@@ -35,14 +40,26 @@ def finding_words():
 	'''
 	finalsynonyms = []
 	lastWord = 0
-	auxFile = open('auxFile.txt', 'r')
+	try:
+		auxFile = open('auxFile.txt', 'r')
+	except:
+		print "Not able to open auxFile (did you delete it?)"
+		raise
 	midword = middle_word(auxFile.read(), 'title="">', '<', lastWord)
 	while midword[0] != "":
 		finalsynonyms.append(midword[0])
 		lastWord = midword[1]
-		auxFile = open('auxFile.txt', 'r')
+		try:
+			auxFile = open('auxFile.txt', 'r')
+		except:
+			print "Not able to open auxFile (did you delete it?)"
+			raise
 		midword = middle_word(auxFile.read(), 'title="">', '<', lastWord)
-	os.remove("auxFile.txt")
+	try:
+		os.remove("auxFile.txt")
+	except:
+		print "Not able to delete the file (did you delete it?)"
+		raise
 	return finalsynonyms
 
 def find_synonyms(word):
