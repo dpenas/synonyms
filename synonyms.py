@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
-import urllib 
+
+import urllib
+import os
 
 def retrieve_information(word):
 	'''
@@ -16,8 +18,10 @@ def retrieve_information(word):
 	auxFile.close()
 
 def middle_word(sentence, first, second, lastWord):
-	'''Given a sentence and two characters/words to look at, it returns
-	the word in the middle'''
+	'''
+	Given a sentence and two characters/words to look at, it returns
+	the word in the middle
+	'''
 	try:
 		beginning = sentence.index(first, lastWord) + len(first)
 		ending = sentence.index(second, beginning)
@@ -26,6 +30,9 @@ def middle_word(sentence, first, second, lastWord):
 		return ("", 0)
 
 def finding_words():
+	'''
+	Opens the file and finds the synonyms of the given word
+	'''
 	finalsynonyms = []
 	lastWord = 0
 	auxFile = open('auxFile.txt', 'r')
@@ -33,11 +40,15 @@ def finding_words():
 	while midword[0] != "":
 		finalsynonyms.append(midword[0])
 		lastWord = midword[1]
-		print lastWord
 		auxFile = open('auxFile.txt', 'r')
 		midword = middle_word(auxFile.read(), 'title="">', '<', lastWord)
-		print midword
-	auxFile.close()
+	os.remove("auxFile.txt")
 	return finalsynonyms
 
-		
+def find_synonyms(word):
+	''' 
+	Use this function to get the synonyms of the word you want 
+	'''
+	retrieve_information(word)
+	synonyms = finding_words()
+	return synonyms
