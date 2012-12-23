@@ -11,16 +11,19 @@ def retrieve_information(word):
 	API_KEY = "de96c"
 	action = "/thesaurus/" #Looks for the synonym of the word
 	url = "http://api.wordreference.com/" + API_KEY + action + word
-	htmlurl = urllib.urlopen(url)
+	try:
+		htmlurl = urllib.urlopen(url)
+	except:
+		print "Not able to open the URL (maybe it's an API problem or the URL has been renamed"
+		raise
 	try:
 		auxFile = open('auxFile.txt', 'w')
+		auxFile.write(htmlurl.read())
+		htmlurl.close()
+		auxFile.close()
 	except:
 		print "Not able to create the auxFile to save the results"
 		raise
-
-	auxFile.write(htmlurl.read())
-	htmlurl.close()
-	auxFile.close()
 
 def middle_word(sentence, first, second, lastWord):
 	'''
