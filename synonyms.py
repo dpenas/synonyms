@@ -39,24 +39,32 @@ def middle_word(sentence, first, second, lastWord):
 
 def finding_words():
 	'''
-	Opens the file and finds the synonyms of the given word
+	Opens the file, finds the synonyms of the given word and returns a list of lists
+	with the synonyms depending on the different meaning of the words
 	'''
+	i = 0 #Numbers of sublists created
 	finalsynonyms = []
 	lastWord = 0
+	finalsynonyms.append([])
 	try:
 		auxFile = open('auxFile.txt', 'r')
 	except:
 		print "Not able to open auxFile (did you delete it?)"
 		raise
 	midword = middle_word(auxFile.read(), 'title="">', '<', lastWord)
+	auxFile = open('auxFile.txt', 'r')
+	#we look the different meanings the world has
+	meaning = middle_word(auxFile.read(), '/i>', '/b>', midword[1])
 	while midword[0] != "":
-		finalsynonyms.append(midword[0])
+		finalsynonyms[i].append(midword[0])
 		lastWord = midword[1]
-		try:
+		if (meaning[1] < midword[1] and meaning[1] != 0):
+			#if the word changes the meaning, creates a new list and puts the synonyms inside of it
 			auxFile = open('auxFile.txt', 'r')
-		except:
-			print "Not able to open auxFile (did you delete it?)"
-			raise
+			meaning = middle_word(auxFile.read(), '/i>', '/b>', lastWord)
+			finalsynonyms.append([])
+			i = i+1
+		auxFile = open('auxFile.txt', 'r')
 		midword = middle_word(auxFile.read(), 'title="">', '<', lastWord)
 	try:
 		os.remove("auxFile.txt")
@@ -67,7 +75,9 @@ def finding_words():
 
 def find_synonyms(word):
 	''' 
-	Use this function to get the synonyms of the word you want 
+	Use this function to get the synonyms of the word you want
+	0: looks for the synonyms
+	1: 
 	'''
 	retrieve_information(word)
 	synonyms = finding_words()
